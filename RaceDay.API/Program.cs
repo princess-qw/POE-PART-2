@@ -110,6 +110,29 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+// Return a generic error response for unexpected production errors.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+            context.Response.StatusCode =
+                StatusCodes.Status500InternalServerError;
+
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsJsonAsync(new
+            {
+                error = "An unexpected server error occurred."
+            });
+        });
+    });
+}
+
+// Enable Swagger in development environments.
+
+
 // Enable Swagger in development environments.
 if (app.Environment.IsDevelopment())
 {
