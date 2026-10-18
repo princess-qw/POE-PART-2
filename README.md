@@ -77,11 +77,6 @@ The test project is `RaceDay.Test`.
 
 GitHub Actions automatically runs the configured workflow on pushes and pull requests to the `main` or `master` branch. The workflow restores dependencies, builds the solution, and runs the automated tests.
 
-## GitHub Actions Evidence
-
-Add a screenshot of the successful GitHub Actions workflow here.
-
-`[Insert screenshot of successful workflow run]`
 
 ## API Testing Evidence
 
@@ -92,8 +87,7 @@ https://localhost:7230/swagger/index.html
 ## Demo Video
 
 Add the link to the assignment demonstration video here.
-
-`[Insert demo video link]`
+https://www.youtube.com/watch?v=c_lp8XQt2lc
 
 ## Author
 
