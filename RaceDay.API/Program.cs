@@ -142,6 +142,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 // Authenticate requests before evaluating authorization requirements.
 app.UseAuthentication();
 app.UseAuthorization();

@@ -28,6 +28,10 @@ public class User
     [Column("Created_At")]
     public DateTime CreatedAt { get; set; }
 
+    [StringLength(500)]
+    [Column("Profile_Picture_Url")]
+    public string? ProfilePictureUrl { get; set; }
+
     public Organiser? Organiser { get; set; }
 
     public Participant? Participant { get; set; }

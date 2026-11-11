@@ -64,3 +64,4 @@ namespace RaceDay.API.Models
         public Event? Event { get; set; }
     }
 }
+ 

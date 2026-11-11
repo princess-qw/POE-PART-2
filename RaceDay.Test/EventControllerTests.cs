@@ -1,10 +1,13 @@
 ﻿
 using System;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using RaceDay.API.Controllers;
 using RaceDay.API.Data;
 using RaceDay.API.Models;
@@ -25,7 +28,9 @@ public class EventControllerTests
         RaceDayDbContext context,
         int userId)
     {
-        var controller = new EventController(context);
+        var environment = new MockWebHostEnvironment();
+
+        var controller = new EventController(context, environment);
 
         var identity = new ClaimsIdentity(
             new[]
@@ -208,4 +213,23 @@ public class EventControllerTests
         Assert.IsType<BadRequestObjectResult>(result);
         Assert.Empty(await context.Events.ToListAsync());
     }
+}
+
+public class MockWebHostEnvironment : IWebHostEnvironment
+{
+    public string ApplicationName { get; set; } = "RaceDay.Tests";
+
+    public string EnvironmentName { get; set; } = "Testing";
+
+    public string WebRootPath { get; set; } =
+        Path.Combine(Path.GetTempPath(), "RaceDayTests");
+
+    public IFileProvider WebRootFileProvider { get; set; } =
+        new NullFileProvider();
+
+    public string ContentRootPath { get; set; } =
+        Path.GetTempPath();
+
+    public IFileProvider ContentRootFileProvider { get; set; } =
+        new NullFileProvider();
 }

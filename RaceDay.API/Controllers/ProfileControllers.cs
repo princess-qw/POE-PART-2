@@ -15,10 +15,16 @@ namespace RaceDay.API.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly RaceDayDbContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public ProfileController(RaceDayDbContext context)
+        private const long MaxFileSize = 5 * 1024 * 1024;
+
+        public ProfileController(
+            RaceDayDbContext context,
+            IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         private int? CurrentUserId
@@ -61,7 +67,8 @@ namespace RaceDay.API.Controllers
                         o.FirstName,
                         o.LastName,
                         o.Phone,
-                        o.OrganisationName
+                        o.OrganisationName,
+                        user.ProfilePictureUrl
                     })
                     .SingleOrDefaultAsync();
 
@@ -83,7 +90,8 @@ namespace RaceDay.API.Controllers
                         p.FirstName,
                         p.LastName,
                         p.Phone,
-                        p.DateOfBirth
+                        p.DateOfBirth,
+                        user.ProfilePictureUrl
                     })
                     .SingleOrDefaultAsync();
 
@@ -194,6 +202,101 @@ namespace RaceDay.API.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Profile updated successfully." });
+        }
+
+        // POST: api/Profile/picture
+        [HttpPost("picture")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadProfilePicture(
+            IFormFile file)
+        {
+            if (CurrentUserId is not int userId)
+                return Unauthorized();
+
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new
+                {
+                    message = "Please select an image."
+                });
+            }
+
+            if (file.Length > MaxFileSize)
+            {
+                return BadRequest(new
+                {
+                    message = "The image cannot exceed 5 MB."
+                });
+            }
+
+            var allowedExtensions = new[]
+            {
+                ".jpg", ".jpeg", ".png", ".webp"
+            };
+
+            var extension = Path.GetExtension(file.FileName)
+                .ToLowerInvariant();
+
+            if (!allowedExtensions.Contains(extension))
+            {
+                return BadRequest(new
+                {
+                    message = "Only JPG, JPEG, PNG and WEBP images are allowed."
+                });
+            }
+
+            var allowedContentTypes = new[]
+            {
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            };
+
+            if (!allowedContentTypes.Contains(
+                file.ContentType.ToLowerInvariant()))
+            {
+                return BadRequest(new
+                {
+                    message = "The uploaded file must be a valid image."
+                });
+            }
+
+            var user = await _context.Users
+                .SingleOrDefaultAsync(u => u.UserId == userId);
+
+            if (user == null)
+                return NotFound(new { message = "User not found." });
+
+            var webRoot = _environment.WebRootPath;
+
+            if (string.IsNullOrWhiteSpace(webRoot))
+                webRoot = Path.Combine(
+                    _environment.ContentRootPath, "wwwroot");
+
+            var uploadFolder = Path.Combine(
+                webRoot, "uploads", "profile-pictures");
+
+            Directory.CreateDirectory(uploadFolder);
+
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var filePath = Path.Combine(uploadFolder, fileName);
+
+            await using (var stream = new FileStream(
+                filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            user.ProfilePictureUrl =
+                $"/uploads/profile-pictures/{fileName}";
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Profile picture uploaded successfully.",
+                profilePictureUrl = user.ProfilePictureUrl
+            });
         }
     }
 

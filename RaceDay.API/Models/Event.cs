@@ -46,6 +46,9 @@ namespace RaceDay.API.Models
         [Column("Created_At")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
+        [Column("Banner_Image")]
+        [StringLength(255)]
+        public string? BannerImage { get; set; }
 
         public Organiser? Organiser { get; set; }
     }
