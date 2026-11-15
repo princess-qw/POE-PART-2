@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Participant Dashboard";
+}
+
+<div class="container mt-4">
+
+    <h1 class="mb-2">Participant Dashboard</h1>
+
+    <p class="text-muted">
+        Welcome to your RaceDay Participant Portal.
+    </p>
+
+    <hr />
+
+    <div class="row g-4 mt-2">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100">
+                <h4>Browse Events</h4>
+                <p>Discover sporting events and find one you would like to join.</p>
+                <a asp-controller="Event"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Browse Events
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100">
+                <h4>My Enrolments</h4>
+                <p>View the events you have enrolled in.</p>
+                <a asp-controller="Participant"
+                   asp-action="MyEnrolments"
+                   class="btn btn-primary">
+                    My Enrolments
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100">
+                <h4>My Results</h4>
+                <p>View your race positions and finishing times.</p>
+                <a asp-controller="Participant"
+                   asp-action="MyResults"
+                   class="btn btn-primary">
+                    My Results
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100">
+                <h4>My Profile</h4>
+                <p>View and update your personal information.</p>
+                <a asp-controller="Profile"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    My Profile
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <form asp-controller="Auth"
+          asp-action="Logout"
+          method="post"
+          class="mt-4">
+
+        <button type="submit" class="btn btn-danger">
+            Logout
+        </button>
+
+    </form>
+
+</div>

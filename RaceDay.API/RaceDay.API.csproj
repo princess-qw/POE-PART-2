@@ -1,4 +1,4 @@
-
+﻿
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
@@ -29,6 +29,11 @@
   <ItemGroup>
     <Folder Include="DARATA\" />
     <Folder Include="wwwroot\uploads\events\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="RaceDay.Web.csproj" />
+    <None Include="RaceDay.Web.csproj.user" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,220 @@
+﻿@model RaceDay.Web.Models.OrganiserDashboardViewModel
+
+@{
+    ViewData["Title"] = "Organiser Dashboard";
+}
+
+<div class="container mt-4 mb-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold" style="color: #9b4b70;">
+            Organiser Dashboard
+        </h1>
+        <p class="text-muted">
+            Welcome to your RaceDay Organiser Portal.
+            Here is an overview of your events and participants.
+        </p>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <!-- DASHBOARD SUMMARY -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100"
+                 style="background-color: #fce4ec; border-radius: 15px;">
+                <div class="card-body p-4">
+                    <h6 class="text-muted">Total Events</h6>
+                    <h2 class="fw-bold" style="color: #9b4b70;">
+                        @Model.TotalEvents
+                    </h2>
+                    <p class="mb-0">Events you have created</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100"
+                 style="background-color: #f8e8f0; border-radius: 15px;">
+                <div class="card-body p-4">
+                    <h6 class="text-muted">Upcoming Events</h6>
+                    <h2 class="fw-bold" style="color: #9b4b70;">
+                        @Model.UpcomingEvents
+                    </h2>
+                    <p class="mb-0">Events scheduled for today or later</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100"
+                 style="background-color: #fce4ec; border-radius: 15px;">
+                <div class="card-body p-4">
+                    <h6 class="text-muted">Total Enrolments</h6>
+                    <h2 class="fw-bold" style="color: #9b4b70;">
+                        @Model.TotalEnrolments
+                    </h2>
+                    <p class="mb-0">Participants enrolled in your events</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EVENT SUMMARY TABLE -->
+    <div class="card shadow-sm border-0 mb-5"
+         style="border-radius: 15px;">
+
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-3" style="color: #9b4b70;">
+                My Events Overview
+            </h4>
+
+            @if (Model.Events != null && Model.Events.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+
+                        <thead style="background-color: #fce4ec;">
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Event Type</th>
+                                <th>Enrolments</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.Events)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">
+                                        @item.EventName
+                                    </td>
+
+                                    <td>
+                                        @item.EventDate.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        @item.EventLocation
+                                    </td>
+
+                                    <td>
+                                        @item.EventType
+                                    </td>
+
+                                    <td>
+                                        <span class="badge rounded-pill"
+                                              style="background-color: #c76b91;">
+                                            @item.TotalEnrolments
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted mb-0">
+                    You have not created any events yet.
+                    Your events will appear here.
+                </p>
+            }
+
+        </div>
+    </div>
+
+    <!-- DASHBOARD NAVIGATION -->
+    <h4 class="fw-bold mb-3" style="color: #9b4b70;">
+        Manage Your Portal
+    </h4>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100 border-0">
+                <h5>My Events</h5>
+                <p>Create, update and manage your sporting events.</p>
+                <a asp-controller="Event"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Manage Events
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100 border-0">
+                <h5>Categories</h5>
+                <p>Select an event to manage its categories.</p>
+                <a asp-controller="Event"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Manage Categories
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100 border-0">
+                <h5>Enrolments</h5>
+                <p>View participants enrolled in your events.</p>
+                <a asp-controller="Event"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    View Enrolments
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100 border-0">
+                <h5>Results</h5>
+                <p>Manage and publish event results.</p>
+                <a asp-controller="Event"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    Manage Results
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 h-100 border-0">
+                <h5>My Profile</h5>
+                <p>View and update your organiser profile.</p>
+                <a asp-controller="Profile"
+                   asp-action="Index"
+                   class="btn btn-primary">
+                    My Profile
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LOGOUT -->
+    <form asp-controller="Auth"
+          asp-action="Logout"
+          method="post"
+          class="mt-4">
+
+        <button type="submit" class="btn btn-danger">
+            Logout
+        </button>
+
+    </form>
+
+</div>

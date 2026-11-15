@@ -1,0 +1,127 @@
+﻿@model RaceDay.Web.Models.EventViewModel
+
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow p-4">
+
+        <h2 class="mb-2">Create New Event</h2>
+
+        <p class="text-muted">
+            Enter the details below to create your sporting event.
+        </p>
+
+        <hr />
+
+        <form asp-controller="Event"
+              asp-action="Create"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Event_Name" class="form-label"></label>
+                <input asp-for="Event_Name" class="form-control"
+                       placeholder="Enter event name" />
+                <span asp-validation-for="Event_Name"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Event_Date" class="form-label"></label>
+                <input asp-for="Event_Date" type="date"
+                       class="form-control" />
+                <span asp-validation-for="Event_Date"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Event_Location" class="form-label"></label>
+                <input asp-for="Event_Location" class="form-control"
+                       placeholder="Enter event location" />
+                <span asp-validation-for="Event_Location"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Event_Type" class="form-label"></label>
+                <select asp-for="Event_Type" class="form-select">
+                    <option value="">-- Select Event Type --</option>
+                    <option value="Running">Running</option>
+                    <option value="Cycling">Cycling</option>
+                    <option value="Swimming">Swimming</option>
+                    <option value="Triathlon">Triathlon</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="Event_Type"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Describe your event"></textarea>
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Registration_Deadline"
+                       class="form-label"></label>
+                <input asp-for="Registration_Deadline"
+                       type="date"
+                       class="form-control" />
+                <span asp-validation-for="Registration_Deadline"
+                      class="text-danger"></span>
+            </div>
+
+            <!-- Event Banner Image Upload -->
+            <div class="mb-3">
+                <label asp-for="BannerFile" class="form-label">
+                    Event Banner Image (Optional)
+                </label>
+
+                <input asp-for="BannerFile"
+                       type="file"
+                       class="form-control"
+                       accept=".jpg,.jpeg,.png,.webp" />
+
+                <span asp-validation-for="BannerFile"
+                      class="text-danger"></span>
+
+                <small class="form-text text-muted">
+                    Upload a JPG, JPEG, PNG or WEBP image.
+                    Maximum file size: 5 MB.
+                </small>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+
+                <button type="submit" class="btn btn-primary">
+                    Create Event
+                </button>
+
+                <a asp-controller="Event"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

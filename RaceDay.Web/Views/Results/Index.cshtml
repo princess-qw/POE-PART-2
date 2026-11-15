@@ -1,0 +1,162 @@
+﻿@model List<RaceDay.Web.Models.ResultsViewModel>
+
+@{
+    ViewData["Title"] = "Manage Results";
+    int eventId = ViewBag.EventId ?? 0;
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Manage Event Results</h2>
+            <p class="text-muted">
+                Record and update participant race results.
+            </p>
+        </div>
+
+        <a asp-controller="Event"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Back to Events
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card shadow-sm p-3 mb-4">
+        <h5>Total Participants</h5>
+        <h3 class="text-primary">
+            @(Model?.Count ?? 0)
+        </h3>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No participants have enrolled in this event yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Participant</th>
+                        <th>Bib Number</th>
+                        <th>Category</th>
+                        <th>Distance (KM)</th>
+                        <th>Finish Time</th>
+                        <th>Position</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var formId = $"resultForm_{item.EnrolmentId}";
+
+                        <tr>
+                            <td>
+                                <form id="@formId"
+                                      asp-controller="Results"
+                                      asp-action="Record"
+                                      method="post">
+
+                                    <input type="hidden"
+                                           name="eventId"
+                                           value="@eventId" />
+
+                                    <input type="hidden"
+                                           name="enrolmentId"
+                                           value="@item.EnrolmentId" />
+                                </form>
+
+                                @item.ParticipantName
+                            </td>
+
+                            <td>@item.BibNumber</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.DistanceKm.ToString("N2")</td>
+
+                            <td>
+                                <input type="time"
+                                       name="finishTime"
+                                       value="@item.FinishTime"
+                                       step="1"
+                                       form="@formId"
+                                       class="form-control" />
+                            </td>
+
+                            <td>
+                                <input type="number"
+                                       name="position"
+                                       value="@item.Position"
+                                       min="1"
+                                       form="@formId"
+                                       class="form-control"
+                                       placeholder="Position" />
+                            </td>
+
+                            <td>
+                                <select name="resultStatus"
+                                        form="@formId"
+                                        class="form-select"
+                                        required>
+
+                                    <option value=""
+                                            disabled
+                                            selected="@(item.ResultStatus == "Pending")">
+                                        Select status
+                                    </option>
+
+                                    <option value="Completed"
+                                            selected="@(item.ResultStatus == "Completed")">
+                                        Completed
+                                    </option>
+
+                                    <option value="DNF"
+                                            selected="@(item.ResultStatus == "DNF")">
+                                        DNF
+                                    </option>
+
+                                    <option value="DNS"
+                                            selected="@(item.ResultStatus == "DNS")">
+                                        DNS
+                                    </option>
+
+                                </select>
+                            </td>
+
+                            <td>
+                                <button type="submit"
+                                        form="@formId"
+                                        class="btn btn-primary btn-sm">
+                                    Save Result
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+</div>

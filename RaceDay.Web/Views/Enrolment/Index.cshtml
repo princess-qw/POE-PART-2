@@ -1,0 +1,118 @@
+﻿@model List<RaceDay.Web.Models.EnrolmentViewModel>
+
+@{
+    ViewData["Title"] = "Event Enrolments";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Event Enrolments</h2>
+            <p class="text-muted">
+                View participants registered for this event.
+            </p>
+        </div>
+
+        <a asp-controller="Event"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Back to Events
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card shadow-sm p-3 mb-4">
+        <h5>Total Enrolments</h5>
+        <h2 class="text-primary">@Model.Count</h2>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No participants have enrolled in this event yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Participant</th>
+                        <th>Phone</th>
+                        <th>Category</th>
+                        <th>Distance (KM)</th>
+                        <th>Bib Number</th>
+                        <th>Enrolment Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @(item.Participant == null
+                                                        ? "Unknown"
+                                                        : $"{item.Participant.FirstName} {item.Participant.LastName}")
+                    </td>
+
+                            <td>
+                                @(item.Participant?.Phone ?? "N/A")
+                            </td>
+
+                            <td>
+                                @(item.Category?.CategoryName ?? "N/A")
+                            </td>
+
+                            <td>
+                                @(item.Category?.DistanceKm.ToString("N2") ?? "N/A")
+                            </td>
+
+                            <td>@item.BibNumber</td>
+
+                            <td>
+                                @item.EnrolmentDate.ToString("dd MMM yyyy")
+                            </td>
+
+                            <td>
+                        @if (item.Status == "Confirmed")
+                                {
+                                    <span class="badge bg-success">Confirmed</span>
+                                }
+                                else if (item.Status == "Cancelled")
+                                {
+                                    <span class="badge bg-danger">Cancelled</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        @item.Status
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+</div>

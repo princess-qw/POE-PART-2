@@ -1,0 +1,125 @@
+﻿@model List<RaceDay.Web.Models.ParticipantCategoryViewModel>
+
+@{
+    ViewData["Title"] = "Event Categories";
+}
+
+<div class="container mt-4">
+
+    <h1>Available Event Categories</h1>
+
+    <p class="text-muted">
+        Select a category to enrol in this sporting event.
+    </p>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="card shadow-sm p-4 text-center">
+            <h4>No categories available</h4>
+            <p class="text-muted">
+                There are currently no categories for this event.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+
+            @foreach (var category in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card shadow-sm p-4 h-100">
+
+                        <h4>@category.CategoryName</h4>
+
+                        <hr />
+
+                        <p>
+                            <strong>Distance:</strong>
+                            @category.DistanceKm KM
+                        </p>
+
+                        <p>
+                            <strong>Entry Fee:</strong>
+                            R @category.EntryFee.ToString("N2")
+                        </p>
+
+                        <p>
+                            <strong>Maximum Participants:</strong>
+                            @category.MaximumParticipation
+                        </p>
+
+                        <p>
+                            <strong>Start Point:</strong>
+                            @category.StartPoint
+                        </p>
+
+                        <p>
+                            <strong>End Point:</strong>
+                            @category.EndPoint
+                        </p>
+
+                        <form asp-controller="Participant"
+                              asp-action="Enrol"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="eventId"
+                                   value="@ViewBag.EventId" />
+
+                            <input type="hidden"
+                                   name="categoryId"
+                                   value="@category.CategoryId" />
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    Bib Number
+                                </label>
+
+                                <input type="text"
+                                       name="bibNumber"
+                                       class="form-control"
+                                       maxlength="20"
+                                       required
+                                       placeholder="Enter your bib number" />
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-primary w-100">
+                                Enrol Now
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+    <a asp-controller="Event"
+       asp-action="Index"
+       class="btn btn-secondary mt-4">
+        Back to Events
+    </a>
+
+</div>

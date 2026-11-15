@@ -1,0 +1,87 @@
+﻿@model RaceDay.Web.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container mt-5" style="max-width: 650px;">
+    <div class="card shadow p-4">
+        <h2 class="text-center mb-4">Create Your RaceDay Account</h2>
+
+        <form asp-controller="Auth" asp-action="Register" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label">First Name</label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label">Last Name</label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label">Phone Number</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Password</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Role" class="form-label">Account Type</label>
+                <select asp-for="Role" class="form-select">
+                    <option value="">Select account type</option>
+                    <option value="Participant">Participant</option>
+                    <option value="Organiser">Organiser</option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OrganisationName" class="form-label">Organisation Name (Organisers only)</label>
+                <input asp-for="OrganisationName" class="form-control" />
+                <span asp-validation-for="OrganisationName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DateOfBirth" class="form-label">Date of Birth (Participants only)</label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Register
+            </button>
+
+            <p class="text-center mt-3">
+                Already have an account?
+                <a asp-controller="Auth" asp-action="Login">Login here</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

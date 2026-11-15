@@ -1,0 +1,128 @@
+﻿
+@model List<RaceDay.Web.Models.ParticipantResultViewModel>
+
+@{
+    ViewData["Title"] = "My Results";
+}
+
+@functions {
+    public static string GetOrdinal(int number)
+    {
+        if (number % 100 >= 11 && number % 100 <= 13)
+            return number + "th";
+
+        return (number % 10) switch
+        {
+            1 => number + "st",
+            2 => number + "nd",
+            3 => number + "rd",
+            _ => number + "th"
+        };
+    }
+}
+
+<div class="container mt-4">
+
+    <h1>My Race Results</h1>
+
+    <p class="text-muted">
+        View your personal race history, finishing times and positions.
+    </p>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="card shadow-sm p-4 text-center">
+            <h4>No results available</h4>
+            <p>
+                Your race results will appear here once an Organiser
+                records them.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Event Date</th>
+                        <th>Category</th>
+                        <th>Finish Time</th>
+                        <th>Finishing Position</th>
+                        <th>Result Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var result in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@result.EventName</strong>
+                            </td>
+
+                            <td>
+                                @result.EventDate.ToString("dd MMM yyyy")
+                            </td>
+
+                            <td>
+                                @result.CategoryName
+                            </td>
+
+                            <td>
+                                @(result.FinishTime?.ToString(@"hh\:mm\:ss")
+                                    ?? "Not recorded")
+                            </td>
+
+                            <td>
+                                @if (result.Position.HasValue &&
+                                     result.TotalFinishers > 0)
+                                {
+                                    <strong>
+                                        @GetOrdinal(result.Position.Value)
+                                    </strong>
+                                    <span>
+                                        out of @result.TotalFinishers finishers
+                                    </span>
+                                }
+                                else if (result.Position.HasValue)
+                                {
+                                    <strong>
+                                        @GetOrdinal(result.Position.Value)
+                                    </strong>
+                                }
+                                else
+                                {
+                                    <span>Not recorded</span>
+                                }
+                            </td>
+
+                            <td>
+                                <span class="badge bg-info text-dark">
+                                    @result.ResultStatus
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+    <a asp-controller="Participant"
+       asp-action="Dashboard"
+       class="btn btn-secondary mt-3">
+        Back to Dashboard
+    </a>
+
+</div>
