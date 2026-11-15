@@ -1,94 +1,87 @@
- RaceDay API
+# 🏁 RaceDay – Event Management System
 
 ## Project Overview
 
-RaceDay API is an ASP.NET Core Web API designed to manage race events, participation categories, enrolments, and race results. It uses Entity Framework Core to interact with a SQL Server database and JWT bearer authentication to protect authorised endpoints.
+RaceDay is a web-based event management system developed to simplify the organisation and management of sporting events. The system allows Organisers to manage events and Participants to register, browse events and enrol in available categories.
+
+The project was developed using ASP.NET Core and .NET 9, with SQL Server for database management and Microsoft Azure Blob Storage for event banner images.
+
+## System Features
+
+### Organiser Features
+- Organiser registration and login.
+- Organiser dashboard.
+- Create, view, update and delete events.
+- Upload event banner images.
+- Manage event categories.
+- View participant enrolments.
+
+### Participant Features
+- Participant registration and login.
+- Participant dashboard.
+- Browse available events.
+- View event details.
+- View available categories.
+- Enrol in events.
+
+### Additional Features
+- JWT authentication and authorisation.
+- Role-based access control.
+- SQL Server database integration.
+- Azure Blob Storage integration.
+- Event banner image uploads.
+- API endpoints documented using Swagger.
 
 ## Technologies Used
 
 - C#
-- ASP.NET Core Web API (.NET 9)
+- ASP.NET Core / .NET 9
+- SQL Server
 - Entity Framework Core
-- Microsoft SQL Server
-- JWT bearer authentication
+- Microsoft Azure Blob Storage
+- JWT Authentication
 - Swagger / OpenAPI
-- xUnit automated tests
-- GitHub Actions
+- HTML, CSS and JavaScript
+- Git and GitHub
 
-## Main Features
+## Project Structure
 
-- User registration and login
-- JWT-based authentication
-- Protected profile endpoint
-- Race event management
-- Race category management
-- Participant enrolments
-- Race result management
-- Role-based access control
-- API documentation through Swagger
-- Automated build and test workflow
+- **RaceDay.API** – Backend API and business logic.
+- **RaceDay.Web** – Frontend web application.
+- **RaceDay.Test** – Unit testing project.
 
-## Prerequisites
+## Running the Project Locally
 
-- Visual Studio 2022
-- .NET 9 SDK
-- SQL Server and SQL Server Management Studio (SSMS)
-
-## Database Configuration
-
-1. Create or configure the `RaceDayDB` database in SQL Server.
-2. Update the connection string in `appsettings.json` to match your SQL Server instance.
-3. Configure the required Entity Framework Core migrations or database setup scripts.
-4. Never commit real passwords, production connection strings, or JWT signing secrets.
-
-## Running the API
-
-1. Clone or download this repository.
+1. Clone the GitHub repository.
 2. Open the solution in Visual Studio 2022.
-3. Restore the NuGet packages.
-4. Configure the SQL Server connection string.
-5. Apply the required database migrations or SQL scripts.
-6. Set `RaceDay.API` as the startup project.
-7. Run the application.
-8. Open the Swagger URL displayed by the application.
+3. Configure the SQL Server connection string.
+4. Configure the Azure Blob Storage connection string.
+5. Configure the JWT settings.
+6. Ensure the database is available.
+7. Build the solution.
+8. Run the API and web projects.
 
-## Authentication
+Never commit passwords, connection strings or Azure storage access keys to GitHub.
 
-Register or log in using the authentication endpoints. Copy the JWT access token returned by login and use the **Authorize** option in Swagger to test protected endpoints.
+## Website
 
-Endpoints that require authentication should reject requests without a valid token. Endpoints restricted by role should also reject users who do not have the required role.
+Local development website:
 
-## API Resources
+https://localhost:7103/Event
 
-| Resource | Purpose |
-|---|---|
-| Authentication | Register users and obtain access tokens |
-| Profile | Retrieve the authenticated user's profile |
-| Events | Manage race events |
-| Categories | Manage race categories |
-| Enrolments | Manage participant enrolments |
-| Results | Manage race results |
+*Note: This address is accessible only when the application is running locally on the development computer. A publicly hosted website link will be added when available.*
 
-Refer to Swagger/OpenAPI for the actual routes, request bodies, response codes, and authorisation requirements.
+## YouTube Demonstration
 
-## Automated Testing
+**Project demonstration video:** To be added.
 
-The test project is `RaceDay.Test`.
+The demonstration video will showcase the RaceDay system, including registration, login, dashboards, event management, category management, participant enrolments and Azure event image uploads.
 
-GitHub Actions automatically runs the configured workflow on pushes and pull requests to the `main` or `master` branch. The workflow restores dependencies, builds the solution, and runs the automated tests.
+## Developer
+
+**Project:** RaceDay – Event Management System  
+**Part:** Programming Assignment Part 3
 
 
-## API Testing Evidence
+The source code for this project is available in this GitHub repository.
 
-Add screenshots showing successful and unsuccessful API requests, including authentication and authorisation checks.
-
-https://localhost:7230/swagger/index.html
-
-## Demo Video
-
-Add the link to the assignment demonstration video here.
-https://www.youtube.com/watch?v=c_lp8XQt2lc
-
-## Author
-
-RaceDay API — Programming Part 2 Assignment
