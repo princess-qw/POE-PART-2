@@ -73,7 +73,7 @@ https://localhost:7103/Event
 
 ## YouTube Demonstration
 
-**Project demonstration video:** To be added.
+https://youtube.com/watch?v=zP4firXUlR0&si=vyyA29NzoJz-DY0P
 
 The demonstration video will showcase the RaceDay system, including registration, login, dashboards, event management, category management, participant enrolments and Azure event image uploads.
 
